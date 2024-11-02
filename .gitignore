@@ -1,0 +1,29 @@
+# Cartelle e file per l'ambiente virtuale
+venv/
+__pycache__/
+*.pyc
+*.pyo
+
+# File di configurazione delle chiavi e variabili d'ambiente
+.env
+
+# Cartelle di output di Docker e altri tool
+docker-compose.override.yml
+dbdata/
+node_modules/
+dist/
+build/
+
+# File generati dai tool di sistema e di editing
+*.swp
+.DS_Store
+
+# File log e cache
+*.log
+*.cache
+
+# Librerie frontend
+yarn.lock
+package-lock.json
+
+backend/backend/*
