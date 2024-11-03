@@ -26,4 +26,4 @@ build/
 yarn.lock
 package-lock.json
 
-backend/backend/*
+backend/kindly_venv/
