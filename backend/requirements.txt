@@ -1,6 +1,5 @@
 attrs==24.2.0
 Automat==24.8.1
-beautifulsoup4==4.12.3
 blinker==1.8.2
 certifi==2024.8.30
 cffi==1.17.1
@@ -55,7 +54,6 @@ requests==2.32.3
 requests-file==2.1.0
 scikit-learn==1.5.2
 scipy==1.14.1
-Scrapy==2.11.2
 service-identity==24.2.0
 setuptools==75.3.0
 soupsieve==2.6
