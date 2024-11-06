@@ -6,9 +6,21 @@ Kindly is a open source AI-based feed of positive news from the web
 ## Analysis and Advice for the Project
 
 ### Crawler and News Gathering
-- **Tools**: Good choice using Scrapy and BeautifulSoup, which are powerful for scraping and free. Alternating with free news APIs (e.g., NewsAPI and Guardian API) will enrich content.
+- **Tools**: For simplicity, use News API and The Guardian API to retrieve articles of the selected categories. Use `requests` and `pymongo` modules.
+  - [x] **News API**: retrieve articles from it and push them on MongoDB 'News' collection.
+  - [ ] **The Guardian API**: retrieve articles from it and push them on MongoDB 'News' collection.
+- **Modularization**
+  - [x] `news_api_collector.py` for News API integration.
+  - [ ] `guardian_api_collector.py` for The Guardian API integration.
+  - [x] `db.py` to handle MongoDB initialization, avoiding code duplication.
+- **Unit Tests**:
+  - [x] Create `test.py` for testing the collectors.
+  - [x] Test `fetch_news` function to ensure it retrieves articles correctly.
+  - [x] Test `save_news` function to ensure it only saves unique articles to MongoDB
+  
+---
 
-- **Pre-Processing Pipeline**:
+### Pre-Processing Pipeline
   - [ ] **Sentiment Analysis**: For positive news filtering, use transformers models with Hugging Face. To save memory, start with a pre-trained sentiment model such as VADER or smaller models from DistilBERT, which balance precision and lightness.
   - [ ] **Classification by Scope**: Use topic modeling (e.g., Latent Dirichlet Allocation) or a bag-of-words classification model, easily configured for categories like sports, health, etc.
 
@@ -41,3 +53,12 @@ Kindly is a open source AI-based feed of positive news from the web
 - [ ] **Mobile Extension**: With React, you could create a mobile app using React Native, allowing reuse of some components.
 
 ---
+
+### Running Tests
+To run the unit tests for the news collectors:
+- set TEST_ENV = true
+- run the following command on terminal:
+  ```bash
+  cd news_collector/
+  python -m unittest test.py
+  ```

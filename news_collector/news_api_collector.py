@@ -1,9 +1,8 @@
 import os
 import requests
-from pymongo import MongoClient
-from pymongo.server_api import ServerApi
 from datetime import datetime
 from dotenv import load_dotenv
+from db import get_mongo_collection
 
 # load virtual environment variables
 load_dotenv()
@@ -11,12 +10,9 @@ load_dotenv()
 # config api and db
 NEWS_API_KEY = os.getenv('NEWS_API_KEY')
 NEWS_API_URL = "https://newsapi.org/v2/top-headlines"
-MONGO_URI = os.getenv('MONGO_URI')
 
-# Initialize MongoDB
-client = MongoClient(MONGO_URI, server_api=ServerApi('1'))
-db = client['kindly_positive_feed']
-collection = db['news']
+# retrieve the collection from mongo
+collection = get_mongo_collection()
 
 def fetch_news(category):
     """Fetch news about the specified category"""
@@ -49,7 +45,9 @@ def save_news(articles, category):
         else:
             num_not_inserted_articles += 1
     print(f"Inserted {num_inserted_articles} articles, {num_not_inserted_articles} already saved for `{category}`!")     
-                     
+    return num_inserted_articles, num_not_inserted_articles
+
+              
 def collect_and_save_news(categories):
     """Download and Save news for each category"""
     for category in categories:
