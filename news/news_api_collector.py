@@ -3,16 +3,23 @@ import requests
 from datetime import datetime
 from dotenv import load_dotenv
 from db import get_mongo_collection
+from tqdm import tqdm
 
-# load virtual environment variables
+# Load environment variables
 load_dotenv()
 
-# config api and db
+# Config API and DB
 NEWS_API_KEY = os.getenv('NEWS_API_KEY')
 NEWS_API_URL = "https://newsapi.org/v2/top-headlines"
 
-# retrieve the collection from mongo
+# Retrieve the collection from Mongo
 collection = get_mongo_collection()
+
+def load_categories(file_path="categories.txt"):
+    """Load categories from a text file"""
+    with open(file_path, "r") as file:
+        categories = [line.strip() for line in file if line.strip()]
+    return categories
 
 def fetch_news(category):
     """Fetch news about the specified category"""
@@ -24,7 +31,6 @@ def fetch_news(category):
     }
     
     response = requests.get(NEWS_API_URL, params=params)
-    # print(response.json().get('articles', []))
     return response.json().get('articles', [])
 
 def save_news(articles, category):
@@ -32,7 +38,7 @@ def save_news(articles, category):
     num_inserted_articles = 0
     num_not_inserted_articles = 0
     
-    for article in articles:
+    for article in tqdm(articles, desc="Gathering articles", colour="magenta"):
         article['category'] = category
         article['timestamp'] = datetime.now()
         # Check whether an article has been already uploaded
@@ -47,16 +53,13 @@ def save_news(articles, category):
     print(f"Inserted {num_inserted_articles} articles, {num_not_inserted_articles} already saved for `{category}`!")     
     return num_inserted_articles, num_not_inserted_articles
 
-              
-def collect_and_save_news(categories):
+def collect_and_save_news():
     """Download and Save news for each category"""
+    categories = load_categories()
     for category in categories:
         articles = fetch_news(category)
         if articles:
             save_news(articles, category)
-        
+
 if __name__ == "__main__":
-    
-    categories = ['Science', 'Sports'] # TODO: add new categories!
-    
-    collect_and_save_news(categories)
+    collect_and_save_news()

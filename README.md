@@ -8,10 +8,10 @@ Kindly is a open source AI-based feed of positive news from the web
 ### Crawler and News Gathering
 - **Tools**: For simplicity, use News API and The Guardian API to retrieve articles of the selected categories. Use `requests` and `pymongo` modules.
   - [x] **News API**: retrieve articles from it and push them on MongoDB 'News' collection.
-  - [ ] **The Guardian API**: retrieve articles from it and push them on MongoDB 'News' collection.
+  - [ ] ~~**The Guardian API**: retrieve articles from it and push them on MongoDB 'News' collection.~~
 - **Modularization**
   - [x] `news_api_collector.py` for News API integration.
-  - [ ] `guardian_api_collector.py` for The Guardian API integration.
+  - [ ] ~~`guardian_api_collector.py` for The Guardian API integration.~~
   - [x] `db.py` to handle MongoDB initialization, avoiding code duplication.
 - **Unit Tests**:
   - [x] Create `test.py` for testing the collectors.
@@ -21,7 +21,20 @@ Kindly is a open source AI-based feed of positive news from the web
 ---
 
 ### Pre-Processing Pipeline
-  - [ ] **Sentiment Analysis**: For positive news filtering, use transformers models with Hugging Face. To save memory, start with a pre-trained sentiment model such as VADER or smaller models from DistilBERT, which balance precision and lightness.
+  #### Sentiment Analysis Pipeline
+- **Objective**: Analyze each collected article to determine whether its sentiment is positive or negative, and save it in the corresponding MongoDB collection with classification details.
+- **Structure and Integration**:
+  - [x] Create a `text_analysis/` folder to manage sentiment analysis functionality.
+  - [x] Add `sentiment_analyzer.py` to load the pre-trained model from Hugging Face and perform sentiment classification.
+  - [ ] Integrate `sentiment_analyzer.py` within the article collection pipeline to analyze the sentiment of each article's title and content.
+- **Classification Logic**:
+  - [ ] For each article, perform sentiment analysis using the `distilbert/distilbert-base-uncased-finetuned-sst-2-english` model.
+  - [ ] If the overall sentiment is positive, save the article in the `positive_news` MongoDB collection. If negative, save it in `negative_news`.
+  - [ ] Include in MongoDB documents the positive and negative probabilities returned by the model, adding them as `positive_score` and `negative_score` fields for each article.
+- **Testing and Maintenance**:
+  - [ ] Add unit tests (`test_sentiment.py`) to ensure sentiment analysis functions correctly.
+  - [ ] Document the sentiment analysis and classification pipeline in the README.
+
   - [ ] **Classification by Scope**: Use topic modeling (e.g., Latent Dirichlet Allocation) or a bag-of-words classification model, easily configured for categories like sports, health, etc.
 
 ---
