@@ -1,6 +1,7 @@
-War
-Palestine
-Animals
-Israel
-Food
-Health
+business
+entertainment
+general
+health
+science
+sports
+technology

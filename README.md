@@ -21,21 +21,33 @@ Kindly is a open source AI-based feed of positive news from the web
 ---
 
 ### Pre-Processing Pipeline
-  #### Sentiment Analysis Pipeline
+#### Sentiment Analysis Pipeline
 - **Objective**: Analyze each collected article to determine whether its sentiment is positive or negative, and save it in the corresponding MongoDB collection with classification details.
 - **Structure and Integration**:
   - [x] Create a `text_analysis/` folder to manage sentiment analysis functionality.
   - [x] Add `sentiment_analyzer.py` to load the pre-trained model from Hugging Face and perform sentiment classification.
-  - [ ] Integrate `sentiment_analyzer.py` within the article collection pipeline to analyze the sentiment of each article's title and content.
+  - [x] Integrate `sentiment_analyzer.py` within the article collection pipeline to analyze the sentiment of each article's title and content.
 - **Classification Logic**:
-  - [ ] For each article, perform sentiment analysis using the `distilbert/distilbert-base-uncased-finetuned-sst-2-english` model.
-  - [ ] If the overall sentiment is positive, save the article in the `positive_news` MongoDB collection. If negative, save it in `negative_news`.
-  - [ ] Include in MongoDB documents the positive and negative probabilities returned by the model, adding them as `positive_score` and `negative_score` fields for each article.
+  - [x] For each article, perform sentiment analysis using the `distilbert/distilbert-base-uncased-finetuned-sst-2-english` model.
+  - [x] If the overall sentiment is positive, save the article in the `positive_news` MongoDB collection. If negative, save it in `negative_news`.
+  - [x] Include in MongoDB documents the positive and negative probabilities returned by the model, adding them as `positive_score` and `negative_score` fields for each article.
 - **Testing and Maintenance**:
-  - [ ] Add unit tests (`test_sentiment.py`) to ensure sentiment analysis functions correctly.
-  - [ ] Document the sentiment analysis and classification pipeline in the README.
+  - [x] Add unit tests (`test_sentiment.py`) to ensure sentiment analysis functions correctly.
+  - [x] Document the sentiment analysis and classification pipeline in the README.
 
-  - [ ] **Classification by Scope**: Use topic modeling (e.g., Latent Dirichlet Allocation) or a bag-of-words classification model, easily configured for categories like sports, health, etc.
+#### Topic Classification Pipeline
+- **Objective**: Automatically assign topic categories to each article by analyzing its content, allowing the article to be represented by multiple tags.
+- **Structure and Integration**:
+  - [x] Create a `text_analysis/` folder to manage topic classification functionality.
+  - [x] Add `topic_classifier.py` to load the BERTopic model and perform unsupervised topic extraction.
+  - [x] Integrate `topic_classifier.py` within the article collection pipeline to analyze topics for each article.
+- **Classification Logic**:
+  - [x] For each article, extract topics automatically using BERTopic, adding a `topics` field with keywords representing each topic.
+  - [x] Insert processed articles into `categorized_positive_news` or `categorized_negative_news` MongoDB collections, depending on their initial sentiment classification, and delete the originals from `positive_news` or `negative_news` collections.
+- **Testing and Maintenance**:
+  - [x] Add unit tests (`test_topic_classifier.py`) to ensure topic classification functions correctly.
+  - [x] Document the topic classification pipeline in the README.
+
 
 ---
 
