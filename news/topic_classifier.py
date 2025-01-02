@@ -70,3 +70,4 @@ def process_all_articles():
     
 if __name__ == "__main__":
     process_all_articles()
+    print("All articles have been processed")
