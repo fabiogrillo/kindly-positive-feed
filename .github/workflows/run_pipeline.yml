@@ -18,20 +18,21 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.12'
+          python-version: '3.10'
 
       # Installa le dipendenze
-      - name: Install dependencies
+      - name: Install python packages
         run: |
-          python3 -m venv venv
-          source venv/bin/activate
-          pip3 install --upgrade pip
-          pip3 install requests tqdm torch transformers python-dotenv pymongo bertopic nltk datasets
+          python -m pip install --upgrade pip
+          pip install requests tqdm torch transformers python-dotenv pymongo bertopic nltk datasets
 
       # Esegui lo script della pipeline
       - name: Run pipeline script
+        env:
+          MONGO_URI: ${{ secrets.MONGO_URI }}
+          NEWS_API_KEY: ${{ secrets.NEWS_API_KEY }}
+          TEST_ENV: ${{ vars.TEST_ENV }}
         run: |
-          source venv/bin/activate 
           chmod +x news/run_pipeline.sh
           ./news/run_pipeline.sh
 
