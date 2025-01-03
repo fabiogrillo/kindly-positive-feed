@@ -5,6 +5,7 @@ from dotenv import load_dotenv
 from db import get_mongo_collection
 import torch
 from tqdm import tqdm
+from datasets import Dataset
 
 # Load environment variables
 load_dotenv()
@@ -30,33 +31,35 @@ def classify_and_store_articles():
     print(f"There are {len(articles)} articles to process.")
     print("Start processing...")
     
-    for article in tqdm(articles, desc="Running sentiment analysis  on articles", colour="green"):
-        title = article.get("title", "")
-        description = article.get("description", "")
-        full_text = f"{title}\n{description}"  # concatenate title and description
-
-        # Run sentiment analysis on the full text
-        result = sentiment_model(full_text)[0]
-        label = result["label"]  # "POSITIVE" or "NEGATIVE"
-        score = result["score"]  # Confidence score of the sentiment
-
-        article["positive_score"] = score if label == "POSITIVE" else 1 - score
-        article["negative_score"] = 1 - score if label == "POSITIVE" else score
-
-        # Rimuovi il campo `_id` per evitare duplicati
+    # Create a dataset from the articles
+    dataset = Dataset.from_dict({'text': [f"{article.get('title', '')}\n{article.get('description', '')}" for article in articles]})
+    
+    results = sentiment_model(dataset["text"], batch_size=8)  # Usa batch_size per migliorare l'efficienza
+    
+    for article, result in tqdm(zip(articles, results), colour="green", desc="Analyzing sentiments"):
+        sentiment = result['label']
+        score = result['score']
+        
+        # Add the sentiment scores to the article
+        article["positive_score"] = score if sentiment == "POSITIVE" else 1 - score
+        article["negative_score"] = 1 - score if sentiment == "POSITIVE" else score
+        
+        # Remove 'id' field to avoid duplicates
         article.pop("_id", None)
-
-        # Store in the appropriate MongoDB collection
-        if label == "POSITIVE":
+        
+        # Add to the corresponding collection
+        if sentiment == 'POSITIVE':
             positive_collection.insert_one(article)
         else:
             negative_collection.insert_one(article)
-
-        # Remove the article from `news` after processing
-        news_collection.delete_one({"_id": article["_id"]})
         
-        # Delete all remainings articles
-        news_collection.delete_many({})
+        # Remove the article from the `news` collection after processing
+        news_collection.delete_one({"_id": article["_id"]})
+    
+    # Delete all remaining articles
+    news_collection.delete_many({})
 
+    print("Processing completed.")
+    
 if __name__ == "__main__":
     classify_and_store_articles()

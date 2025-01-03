@@ -1,8 +1,5 @@
 #!/bin/bash
 
-# Attiva l'ambiente virtuale
-source venv/bin/activate
-
 # Esegui news collector
 echo "Collecting news articles..."
 python3 news_api_collector.py
