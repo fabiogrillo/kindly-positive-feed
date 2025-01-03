@@ -34,7 +34,15 @@ jobs:
           TEST_ENV: ${{ vars.TEST_ENV }}
         run: |
           chmod +x news/run_pipeline.sh
-          ./news/run_pipeline.sh
+          ./news/run_pipeline.sh\
+      
+      # Debug
+      - name: Debug file structure
+        run: |
+          echo "Current directory: $(pwd)"
+          echo "Files in the current directory:"
+          ls -R
+
 
       # Mostra i log in caso di errore
       - name: Show logs
