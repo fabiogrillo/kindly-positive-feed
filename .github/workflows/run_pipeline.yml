@@ -23,18 +23,17 @@ jobs:
       # Installa le dipendenze
       - name: Install dependencies
         run: |
-          cd news
           python3 -m venv venv
           source venv/bin/activate
           pip3 install --upgrade pip
-          pip3 install tqdm torch transformers python-dotenv pymongo bertopic nltk datasets
+          pip3 install requests tqdm torch transformers python-dotenv pymongo bertopic nltk datasets
 
       # Esegui lo script della pipeline
       - name: Run pipeline script
         run: |
-          cd news
-          chmod +x run_pipeline.sh
-          ./run_pipeline.sh
+          source venv/bin/activate 
+          chmod +x news/run_pipeline.sh
+          ./news/run_pipeline.sh
 
       # Mostra i log in caso di errore
       - name: Show logs
