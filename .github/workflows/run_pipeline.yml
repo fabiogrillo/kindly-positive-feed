@@ -23,6 +23,7 @@ jobs:
       # Installa le dipendenze
       - name: Install dependencies
         run: |
+          cd news
           python -m venv venv
           source venv/bin/activate
           pip install -r requirements.txt
@@ -30,15 +31,12 @@ jobs:
       # Esegui lo script della pipeline
       - name: Run pipeline script
         run: |
+          cd news
           chmod +x run_pipeline.sh
           ./run_pipeline.sh
 
       # Mostra i log in caso di errore
       - name: Show logs
         if: failure()
-        run: |
-          if [ -f /tmp/pipeline.log ]; then
-            cat /tmp/pipeline.log
-          else
-            echo "No logs found!"
-          fi
+        run: |  
+          cat /tmp/pipeline.log || echo "No logs found or pipeline.log is missing!"
