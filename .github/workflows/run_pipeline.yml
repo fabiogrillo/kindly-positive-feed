@@ -1,0 +1,44 @@
+name: Daily Pipeline Execution
+
+on:
+  schedule:
+    - cron: '0 17 * * *' # ogni giorno alle 17:00 UTC
+  workflow_dispatch: # permette l'esecuzione manuale
+
+jobs:
+  run-pipeline:
+    runs-on: ubuntu-latest # esegue il job su Ubuntu
+
+    steps:
+      # Checkout del repository
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # Configura Python
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      # Installa le dipendenze
+      - name: Install dependencies
+        run: |
+          python -m venv venv
+          source venv/bin/activate
+          pip install -r requirements.txt
+
+      # Esegui lo script della pipeline
+      - name: Run pipeline script
+        run: |
+          chmod +x run_pipeline.sh
+          ./run_pipeline.sh
+
+      # Mostra i log in caso di errore
+      - name: Show logs
+        if: failure()
+        run: |
+          if [ -f /tmp/pipeline.log ]; then
+            cat /tmp/pipeline.log
+          else
+            echo "No logs found!"
+          fi
