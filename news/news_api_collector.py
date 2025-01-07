@@ -15,7 +15,7 @@ NEWS_API_URL = "https://newsapi.org/v2/top-headlines"
 # Retrieve the collection from Mongo
 collection = get_mongo_collection()
 
-def load_categories(file_path="./categories.txt"):
+def load_categories(file_path="news/categories.txt"):
     """Load categories from a text file"""
     with open(file_path, "r") as file:
         categories = [line.strip() for line in file if line.strip()]

@@ -46,8 +46,12 @@ def classify_topics_with_bertopic(collection, categorized_collection):
     articles = list(collection.find())
     documents = [clean_text(f"{article.get('title', '')} {article.get('description', '')} {article.get('content', '')}") for article in articles]
     
+    if len(documents) < 5:  # Ensure there are enough documents for HDBSCAN
+        print("Not enough documents to classify topics.")
+        return
+    
     topics, probabilities = topic_model.fit_transform(documents)
-    print("Probabilities structure example:", probabilities[:5])
+    # print("Probabilities structure example:", probabilities[:5])
 
     for article, topic_id, prob in tqdm(zip(articles, topics, probabilities), desc="Getting topics", colour="blue"):
         topic_info = topic_model.get_topic(topic_id)
