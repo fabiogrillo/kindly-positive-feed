@@ -3,15 +3,20 @@ Kindly is a open source AI-based feed of positive news from the web
 
 # Project Workflow
 
+## Part 1
+TL;DR
+
+![Pt.1 png](collector.png)
+
 ## Analysis and Advice for the Project
 
 ### Crawler and News Gathering
 - **Tools**: For simplicity, use News API and The Guardian API to retrieve articles of the selected categories. Use `requests` and `pymongo` modules.
   - [x] **News API**: retrieve articles from it and push them on MongoDB 'News' collection.
-  - [ ] ~~**The Guardian API**: retrieve articles from it and push them on MongoDB 'News' collection.~~
+   ~~**The Guardian API**: retrieve articles from it and push them on MongoDB 'News' collection.~~
 - **Modularization**
   - [x] `news_api_collector.py` for News API integration.
-  - [ ] ~~`guardian_api_collector.py` for The Guardian API integration.~~
+   ~~`guardian_api_collector.py` for The Guardian API integration.~~
   - [x] `db.py` to handle MongoDB initialization, avoiding code duplication.
 - **Unit Tests**:
   - [x] Create `test.py` for testing the collectors.
@@ -45,9 +50,14 @@ Kindly is a open source AI-based feed of positive news from the web
   - [x] For each article, extract topics automatically using BERTopic, adding a `topics` field with keywords representing each topic.
   - [x] Insert processed articles into `categorized_positive_news` or `categorized_negative_news` MongoDB collections, depending on their initial sentiment classification, and delete the originals from `positive_news` or `negative_news` collections.
 - **Testing and Maintenance**:
-  - [x] Add unit tests (`test_topic_classifier.py`) to ensure topic classification functions correctly.
-  - [x] Document the topic classification pipeline in the README.
+  - [ ] Add unit tests (`test_topic_classifier.py`) to ensure topic classification functions correctly.
+  - [ ] Document the topic classification pipeline in the README.
 
+---
+
+#### Automation
+- **GitHub Actions**:
+  - [x] : Create a `piepline.yml` file to automatize news extracion and pipeline execution daily at 12:30 UTC
 
 ---
 
@@ -57,6 +67,8 @@ Kindly is a open source AI-based feed of positive news from the web
 - **Space Limits**: Periodically clean out the database of older news items while maintaining a limited history.
 
 ---
+
+# Part 2
 
 ### Profiling and Recommendation Algorithm
 - [ ] **Collaborative Filtering**: Use lightweight implementations such as Scikit-learn to start. Collect enough user data to achieve good collaborative recommendations.
