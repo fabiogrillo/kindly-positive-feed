@@ -42,7 +42,7 @@ def save_news(articles, category):
         article['category'] = category
         article['timestamp'] = datetime.now()
         # Check whether an article has been already uploaded
-        if not collection.find_one({'url': article['url']}):
+        if not collection.find_one({'title': article['title']}):
             try:
                 collection.insert_one(article)
                 num_inserted_articles += 1
