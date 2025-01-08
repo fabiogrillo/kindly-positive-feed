@@ -2,8 +2,8 @@ name: Run Pipeline
 
 on:
   schedule:
-    - cron: '52 14 * * *'  # Everyday at 14:25 UTC
-  workflow_dispatch:  # Allow manual triggering
+    - cron: '20 15 * * *'  # Everyday at 14:25 UTC
+  # workflow_dispatch:  Allow manual triggering
 
 jobs:
   run-pipeline:
