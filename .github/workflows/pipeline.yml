@@ -2,7 +2,7 @@ name: Run Pipeline
 
 on:
   schedule:
-    - cron: '35 14 * * *'  # Everyday at 14:25 UTC
+    - cron: '52 14 * * *'  # Everyday at 14:25 UTC
   workflow_dispatch:  # Allow manual triggering
 
 jobs:
@@ -29,4 +29,6 @@ jobs:
         pip install tqdm bertopic pymongo python-dotenv scikit-learn nltk transformers torch datasets
 
     - name: Run pipeline script
-      run: bash news/run_pipeline.sh
+      run: |
+        chmod +x news/run_pipeline.sh
+        bash news/run_pipeline.sh
