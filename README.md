@@ -1,5 +1,8 @@
+[![Run Pipeline](https://github.com/fabiogrillo/kindly-positive-feed/actions/workflows/pipeline.yml/badge.svg)](https://github.com/fabiogrillo/kindly-positive-feed/actions/workflows/pipeline.yml)
+
 # kindly-positive-feed
 Kindly is a open source AI-based feed of positive news from the web
+
 
 # Project Workflow
 
